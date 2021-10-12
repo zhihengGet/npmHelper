@@ -75,7 +75,7 @@
       <a href={data.package.links.repository}>v{data.package.version}</a>
       <a href={data.package.links.homepage}>
         <span style="vertical-align: super;">Github</span><img
-          src="src/assets/github.png"
+          src="public/github.png"
           alt="?"
           class="git"
         />
