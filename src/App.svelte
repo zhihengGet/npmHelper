@@ -3,7 +3,7 @@
   import Button from "./button.svelte";
   import CMD from "./cmd.svelte";
   import PackageList from "./packages.svelte";
-
+  // Gray 100 theme
   import {
     QueryClient,
     QueryClientProvider,
@@ -82,24 +82,17 @@
     <div
       style="display:flex;justify-content:center;flex-direction:column;align-items:center"
     >
-      <label for="npm" class="npm_select">npm</label>
-      <input id="npm" type="checkbox" checked={useNPM} on:click={toggle} />
-      <label for="yarn">yarn</label>
-      <input
-        id="yarn"
-        type="checkbox"
-        checked={useNPM == false}
-        on:click={toggle}
-      />
-      <!--     <label for="version" class="npm_select">add version</label>
-      <input
-        id="version"
-        type="checkbox"
-        checked={useNPM}
-        on:click={() => {
-          const pkg = Array.from(selected);
-        }}
-      /> -->
+      <span>
+        <label for="npm" class="npm_select">npm</label>
+        <input id="npm" type="checkbox" checked={useNPM} on:click={toggle} />
+        <label for="yarn">yarn</label>
+        <input
+          id="yarn"
+          type="checkbox"
+          checked={useNPM == false}
+          on:click={toggle}
+        />
+      </span>
       <CMD {cmd} bind:this={ref} />
     </div>
 
@@ -107,7 +100,15 @@
       <!-- content here -->
       {#each Array.from(selected) as item}
         <!-- content here -->
-        <div class="badge" on:click={() => selected.delete(item)}>{item}</div>
+        <div
+          class="badge"
+          on:click={() => {
+            selected.delete(item);
+            selected = selected;
+          }}
+        >
+          {item}
+        </div>
       {/each}
     </div>
 
@@ -118,11 +119,11 @@
       {:then value}
         <!-- results was fulfilled -->
         {#if result && Array.isArray(result.results)}
-          <ul class="package">
+          <ol class="package">
             {#each result.results as data}
               <li><Collapible {data} bind:selected /></li>
             {/each}
-          </ul>
+          </ol>
           {#if result.results.length == 0}
             <h4 style="color:lightyellow">Empty</h4>
           {/if}
@@ -133,7 +134,12 @@
       {/await}
     </div>
 
-    <footer>Made with npms.io and love</footer>
+    <footer style="padding:1em">
+      Made with <a
+        href="https://npms.io/"
+        style="color: aquamarine;text-transform:lowercase;">npms.io</a
+      > and love.
+    </footer>
   </div>
 </QueryClientProvider>
 
@@ -147,12 +153,13 @@
     justify-content: center;
     flex-direction: column;
   }
-  @media only screen and (max-width: 500px) {
-    li {
-      list-style-type: decimal;
-    }
-  }
 
+  ol,
+  li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
   footer {
     color: antiquewhite;
   }
@@ -206,50 +213,6 @@
     background-size: 400% 400%;
     animation: gradient 60s ease infinite;
     height: 100vh;
-  }
-
-  @keyframes gradient {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-
-  @media only screen and (max-width: 800px) {
-    .container {
-      width: 100vw;
-    }
-    .searchContainer,
-    .search {
-      width: 80%;
-    }
-  }
-
-  .title {
-    font-size: 2.5rem;
-    font-family: "Lobster", cursive;
-  }
-
-  @keyframes scroll {
-    100% {
-      background-position: 0px -3000px;
-    }
-  }
-
-  @media (prefers-reduced-motion) {
-    .wrapper {
-      animation: scroll 50s linear infinite;
-    }
-  }
-
-  @media (min-width: 670px) {
-    .title {
-      font-size: 5rem;
-    }
+    text-transform: capitalize;
   }
 </style>
